@@ -301,7 +301,7 @@ def load_train_test_sector_npy(
     add_channel_axis=True
 ):
     """
-    Notebook-style loader:
+    Loader:
       - allow_pickle=True (matches how files were saved)
       - labels[:, 0] = pT  |  labels[:, 1] = eta_small
       - returns:

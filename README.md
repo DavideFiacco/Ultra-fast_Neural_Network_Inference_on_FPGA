@@ -1,20 +1,28 @@
 # Ultra-fast_Neural_Network_Inference_on_FPGA
 
-This repository contains a single Python script that:
+This repo contains a single Python driver, CNN_hlsmaker.py, that supports two workflows:
 
-rebuilds the Student inference-only CNN in QKeras (no hint-loss layers),
+1) Evaluation mode (--eval)
+Rebuild the Student QKeras model, load trained weights from a TensorFlow SavedModel, load notebook-style train/test datasets (.npy), fit the same MinMaxScaler used in training, and produce the 10 GeV trigger turn-on (efficiency) curve.
 
-converts it to an hls4ml project targeting an AMD/Xilinx FPGA,
+2) HLS/VHDL generation (no --eval)
+Rebuild the Student model for inference, convert it with hls4ml, and generate an HLS/VHDL project targeting an AMD/Xilinx FPGA (Vivado/Vitis HLS). Prints latency + resource estimates and writes reports/HDL.
 
-generates C++ HLS + VHDL,
+### Mode Evaluation
 
-launches HLS synthesis and out-of-context (OOC) Vivado synthesis, and
+1) Rebuild Student (inference)
+The script defines build_student_inference(...) which reconstructs the Student CNN.
 
-prints latency and resource reports and points you to the report files.
+2) Weight transfer
+The helper load_weights_from_savedmodel_into_student(...) loads pretrained model.
 
-It implements the low-bit (3–4 bit) QStudent design described in the paper and pushes for minimum latency (full unroll / reuse factor 1, streaming I/O, “Latency” strategy).
+3) Load Dataset
+The function load_train_test_sector_npy(...) load training and testing set, estracting from the training the scaler values.
 
-### File layout
+4) Compute turn on curve and plot
+The functions compute_turnon(...) and plot_rutnon(...) respectively compute the binned efficiency and plot the efficiency curve of a 10 GeV trigger on the transverse momentum (pT) of the muon.
+
+### Mode HLS implementation (No-evaluation)
 
 CNN_hlsmaker.py – main script (QKeras model → hls4ml → HLS/VHDL + reports)
 
@@ -23,8 +31,8 @@ How the code works (high level)
 1) Rebuild Student (inference)
 The script defines build_student_inference(...) which reconstructs the Student CNN without training-time hint layers. Layer names (Student_Conv1a, Student_Conv1b, Student_Conv2a, Student_Conv2b, Student_Dense1, Student_Dense2, Student_Output) are preserved so you can copy weights by name if you have a trained model.
 
-2) (Optional) Weight transfer
-If you trained with custom HintLossLayer, the helper transfer_student_weights(...) loads your model with a stubbed loss layer and copies weights by layer name to the inference graph.
+2) Weight transfer
+The helper load_weights_from_savedmodel_into_student(...) loads pretrained model.
 
 3) hls4ml conversion & synthesis
 convert_and_build_hls(...):
@@ -56,6 +64,31 @@ hls4ml_prj_student/myproject_prj/solution1/syn/report/myproject_csynth.rpt
 
 Vivado OOC report (post-synth est.):
 hls4ml_prj_student/myproject_prj/solution1/syn/report/ (same folder, multiple files)
+
+### Command example
+
+    python CNN_hlsmaker.py --eval \
+    --nbits 4 \
+    --savedmodel /path/to/QTeach10k_QStu1.4k_1_0_0_nbits4/net.tf \
+    --train-images /path/to/dataset_cnn/Train_ImagesEta_9x16_plus_noise_SectorPhi1.npy \
+    --train-labels /path/to/dataset_cnn/Train_LabelsEtaAndPt_9x16_plus_noise_SectorPhi1.npy \
+    --test-images  /path/to/dataset_cnn/Test_ImagesEta_9x16_plus_noise_SectorPhi1.npy.npy \
+    --test-labels  /path/to/dataset_cnn/Test_LabelsEtaAndPt_9x16_plus_noise_SectorPhi1.npy \
+    --out turnon_qstudent4.png
+
+Flags explained
+
+--eval : switch to evaluation mode.
+
+--nbits : quantization bits of the QStudent you want to instantiate (e.g., 3 or 4).
+
+--savedmodel : path to the training-time SavedModel folder (contains saved_model.pb and variables/). The script loads it and copies Student_ layer weights* into the inference model.
+
+--train-images, --train-labels : .npy files for training split (labels with two columns [pT, eta_small]).
+
+--test-images, --test-labels : .npy files for test split (same structure).
+
+--out : output PNG with the 10 GeV turn-on scatter.
 
 ### Requirements
 
