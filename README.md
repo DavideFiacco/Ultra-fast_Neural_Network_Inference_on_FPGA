@@ -8,6 +8,10 @@ Rebuild the Student QKeras model, load trained weights from a TensorFlow SavedMo
 2) HLS/VHDL generation (no --eval)
 Rebuild the Student model for inference, convert it with hls4ml, and generate an HLS/VHDL project targeting an AMD/Xilinx FPGA (Vivado/Vitis HLS). Prints latency + resource estimates and writes reports/HDL.
 
+### Dataset
+
+Dataset available [here](https://www.dropbox.com/scl/fo/uoyhyo9tilsav4fbvyk94/AK03GkXakivgN8net7WJjt4?rlkey=cfn9jz2yhi1f1jmvnvwahk3bb&st=b6i7ijec&dl=0)
+
 ### Mode Evaluation
 
 1) Rebuild Student (inference)
