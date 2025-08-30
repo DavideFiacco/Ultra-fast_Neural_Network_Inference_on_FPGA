@@ -103,5 +103,10 @@ Flags explained
 
 - - hls4ml==0.8.*
 
+- - numpy, scipy
+
+- - scikit-learn (for MinMaxScaler)
+
+- - matplotlib
 
 #### Happy synthesizing!
