@@ -342,7 +342,7 @@ def load_train_test_sector_npy(
 
     # Fit MinMax scaler on BOTH targets (pT, eta_small) like in the notebook
     scaler = MinMaxScaler()
-    scaler.fit(Ytr)
+    scaler.fit(Ytr[:, 0:2])
 
     print(" - train_images:", Xtr.shape, " train_labels:", Ytr.shape)
     print(" - test_images :", Xte.shape, " test_labels :", Yte.shape)
@@ -430,10 +430,10 @@ if __name__ == '__main__':
                         help='Run efficiency curve evaluation instead of HLS synthesis.')
     parser.add_argument('--nbits', type=int, default=4)
 
-    parser.add_argument('--train-images', type=str, help='Train_ImagesEta_9x16_plus_noise_SectorPhi1.npy')
-    parser.add_argument('--train-labels', type=str, help='Train_LabelsEtaAndPt_9x16_plus_noise_SectorPhi1.npy')
-    parser.add_argument('--test-images',  type=str, help='Test_ImagesEta_9x16_plus_noise_SectorPhi1.npy or .npy.npy')
-    parser.add_argument('--test-labels',  type=str, help='Test_LabelsEtaAndPt_9x16_plus_noise_SectorPhi1.npy')
+    parser.add_argument('--train-images', type=str, help='train_images16_1mu_with_correct_bkg.npy')
+    parser.add_argument('--train-labels', type=str, help='train_full_labels_1mu_with_correct_bkg.npy')
+    parser.add_argument('--test-images',  type=str, help='test_images16_1mu_with_correct_bkg.npy')
+    parser.add_argument('--test-labels',  type=str, help='test_full_labels_1mu_with_correct_bkg.npy')
 
     parser.add_argument('--savedmodel', type=str,
                         help='Path to a training-time SavedModel dir (e.g., .../net.tf)')
