@@ -3,7 +3,7 @@
 This repo contains a single Python driver, CNN_hlsmaker.py, that supports two workflows:
 
 1) Evaluation mode (--eval)
-Rebuild the Student QKeras model, load trained weights from a TensorFlow SavedModel, load notebook-style train/test datasets (.npy), fit the same MinMaxScaler used in training, and produce the 10 GeV trigger turn-on (efficiency) curve.
+Rebuild the Student QKeras model, load trained weights from a TensorFlow SavedModel, load train/test datasets (.npy), fit the same MinMaxScaler used in training, and produce the 10 GeV trigger turn-on (efficiency) curve.
 
 2) HLS/VHDL generation (no --eval)
 Rebuild the Student model for inference, convert it with hls4ml, and generate an HLS/VHDL project targeting an AMD/Xilinx FPGA (Vivado/Vitis HLS). Prints latency + resource estimates and writes reports/HDL.
@@ -97,20 +97,7 @@ Flags explained
 ### Requirements
 
 - vivado and/or legacy vivado_hls and/or vitis_hls (actually this code has been run and tested with Vitis HLS - High-Level Synthesis v2024.1 (64-bit))
-- Python 3.9+ recommended
-
-- - Packages:
-
-- - tensorflow==2.12.* (or a TF2.x known to work with your QKeras/hls4ml combo)
-
-- - qkeras==0.9.*
-
-- - hls4ml==0.8.*
-
-- - numpy, scipy
-
-- - scikit-learn (for MinMaxScaler)
-
-- - matplotlib
+- conda, required to replicate environment
+- ADD HLS4ML DEPENDENCIES (E.G. COMPILER)
 
 #### Happy synthesizing!
