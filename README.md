@@ -74,10 +74,10 @@ hls4ml_prj_student/myproject_prj/solution1/syn/report/ (same folder, multiple fi
     python CNN_hlsmaker.py --eval \
     --nbits 4 \
     --savedmodel /path/to/QTeach10k_QStu1.4k_1_0_0_nbits4/net.tf \
-    --train-images /path/to/dataset_cnn/Train_ImagesEta_9x16_plus_noise_SectorPhi1.npy \
-    --train-labels /path/to/dataset_cnn/Train_LabelsEtaAndPt_9x16_plus_noise_SectorPhi1.npy \
-    --test-images  /path/to/dataset_cnn/Test_ImagesEta_9x16_plus_noise_SectorPhi1.npy.npy \
-    --test-labels  /path/to/dataset_cnn/Test_LabelsEtaAndPt_9x16_plus_noise_SectorPhi1.npy \
+    --train-images /path/to/dataset_cnn/train_images16_1mu_with_correct_bkg.npy \
+    --train-labels /path/to/dataset_cnn/train_full_labels_1mu_with_correct_bkg.npy \
+    --test-images  /path/to/dataset_cnn/test_images16_1mu_with_correct_bkg.npy \
+    --test-labels  /path/to/dataset_cnn/test_full_labels_1mu_with_correct_bkg.npy \
     --out turnon_qstudent4.png
 
 Flags explained
